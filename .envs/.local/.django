@@ -2,6 +2,12 @@
 # ------------------------------------------------------------------------------
 USE_DOCKER=yes
 IPYTHONDIR=/app/.ipython
+
+# Django
+# ------------------------------------------------------------------------------
+DJANGO_DEBUG=True
+DJANGO_ALLOWED_HOSTS="localhost,0.0.0.0,127.0.0.1"
+
 # Redis
 # ------------------------------------------------------------------------------
 REDIS_URL=redis://redis:6379/0
@@ -12,3 +18,7 @@ REDIS_URL=redis://redis:6379/0
 # Flower
 CELERY_FLOWER_USER=NTQjXlDsGeBLOeDUKfRVYggQKGuczmrH
 CELERY_FLOWER_PASSWORD=iJROdpGOd1YB0tiaTVpkRa2YcUt9LCsWEUGp8zrX5rI1KTOIRjfT7KwUx4Li4ejs
+
+# Database
+# ------------------------------------------------------------------------------
+DATABASE_URL=postgres://debug:debug@postgres:5432/library_management
