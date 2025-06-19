@@ -1,9 +1,18 @@
+import logging
+
 from celery import shared_task
+from django.core.mail import send_mail
 
-from .models import User
 
-
-@shared_task()
-def get_users_count():
-    """A pointless Celery task to demonstrate usage."""
-    return User.objects.count()
+@shared_task
+def async_send_email(subject, message, receivers):
+    try:
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email="noreply@yourdomain.com",
+            recipient_list=receivers,
+        )
+    except Exception:
+        logging.exception("Failed to send email")
+        # Optionally, re-raise or handle as needed
