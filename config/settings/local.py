@@ -1,7 +1,7 @@
+from datetime import timedelta
+
 from .base import *  # noqa: F403
-from .base import INSTALLED_APPS
-from .base import MIDDLEWARE
-from .base import env
+from .base import INSTALLED_APPS, MIDDLEWARE, env
 
 # GENERAL
 # ------------------------------------------------------------------------------
@@ -31,6 +31,7 @@ CACHES = {
 EMAIL_HOST = env("EMAIL_HOST", default="mailpit")
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-port
 EMAIL_PORT = 1025
+DEFAULT_FROM_EMAIL = "noreply@yourdomain.com"  # Default from email address
 
 # django-debug-toolbar
 # ------------------------------------------------------------------------------
@@ -67,3 +68,9 @@ INSTALLED_APPS += ["django_extensions"]
 CELERY_TASK_EAGER_PROPAGATES = True
 # Your stuff...
 # ------------------------------------------------------------------------------
+# JWT
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),  # Example: 1 hour
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),  # Example: 7 days
+    # Other Simple JWT settings can go here
+}

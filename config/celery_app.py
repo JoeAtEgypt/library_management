@@ -26,3 +26,11 @@ def config_loggers(*args, **kwargs):
 
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()
+
+# Import and apply custom beat schedule
+try:
+    from library_management.library.celery_periodic import CELERY_BEAT_SCHEDULE
+
+    app.conf.beat_schedule.update(CELERY_BEAT_SCHEDULE)
+except ImportError:
+    pass

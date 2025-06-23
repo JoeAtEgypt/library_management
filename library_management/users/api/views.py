@@ -1,16 +1,7 @@
-import json
-
-from django.contrib.auth.tokens import default_token_generator
-from django.shortcuts import get_object_or_404
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_decode
-from django.utils.http import urlsafe_base64_encode
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.exceptions import NotAcceptable
-from rest_framework.mixins import ListModelMixin
-from rest_framework.mixins import RetrieveModelMixin
-from rest_framework.mixins import UpdateModelMixin
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -20,10 +11,12 @@ from library_management.users.models import User
 from library_management.users.services import UserService
 from library_management.users.tasks import async_send_email
 
-from .serializers import PasswordResetConfirmSerializer
-from .serializers import PasswordResetRequestSerializer
-from .serializers import RegisterSerializer
-from .serializers import UserSerializer
+from .serializers import (
+    PasswordResetConfirmSerializer,
+    PasswordResetRequestSerializer,
+    RegisterSerializer,
+    UserSerializer,
+)
 
 
 class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet):

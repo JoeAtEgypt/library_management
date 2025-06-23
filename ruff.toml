@@ -1,0 +1,27 @@
+# Exclude files or directories
+exclude = [
+    ".git",
+    ".venv",
+    "migrations",
+    "__pycache__",
+]
+
+# Set line length
+line-length = 88
+
+[lint]
+# Ignore specific rules that conflict with formatter
+ignore = ["COM812", "ISC001"]
+
+# Select rules
+select = ["E", "F", "I", "B"]
+
+[lint.isort]
+combine-as-imports = true
+force-single-line = false
+known-first-party = ["library_management"]
+
+[format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false

@@ -11,7 +11,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   # dependencies for building Python packages
   build-essential \
   # psycopg dependencies
-  libpq-dev
+  libpq-dev \
+  binutils gdal-bin libgdal-dev libproj-dev python3-gdal 
 
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements .
@@ -48,7 +49,7 @@ RUN groupadd --gid 1000 dev-user \
 # Install required system dependencies
 RUN apt-get update && apt-get install --no-install-recommends -y \
   # psycopg dependencies
-  libpq-dev \
+  binutils gdal-bin libgdal-dev libproj-dev python3-gdal \
   wait-for-it \
   # Translations dependencies
   gettext \
