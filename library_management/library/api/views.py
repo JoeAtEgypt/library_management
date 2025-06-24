@@ -4,13 +4,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from library_management.library.filters import AuthorFilter, BookFilter, LibraryFilter
-from library_management.library.models import Book
 from library_management.library.services import (
     AuthorService,
     BookService,
     LibraryService,
 )
-from library_management.users.tasks import async_send_email
 
 from .serializers import AuthorListSerializer, BookListSerializer, LibrarySerializer
 

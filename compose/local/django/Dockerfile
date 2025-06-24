@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   build-essential \
   # psycopg dependencies
   libpq-dev \
-  binutils gdal-bin libgdal-dev libproj-dev python3-gdal 
+  binutils gdal-bin libgdal-dev libproj-dev python3-gdal
 
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements .

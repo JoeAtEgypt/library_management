@@ -7,7 +7,6 @@ from django.core.mail import send_mail
 from django.utils import timezone
 
 from library_management.library.models import BorrowedBook
-from library_management.users.tasks import async_send_email
 
 
 @shared_task

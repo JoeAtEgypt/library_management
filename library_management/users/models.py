@@ -1,7 +1,6 @@
 from typing import ClassVar
 
 from django.contrib.auth.models import AbstractUser
-from django.contrib.gis.db import models as gis_models
 from django.db.models import CharField, EmailField
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
