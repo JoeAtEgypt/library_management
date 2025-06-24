@@ -5,7 +5,7 @@ from channels.layers import get_channel_layer
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
 from django.db import transaction
-from django.db.models import Count, F, Prefetch
+from django.db.models import Count, F, Prefetch, Q
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework.serializers import ValidationError
@@ -44,16 +44,29 @@ class LibraryService:
 
 class AuthorService:
     @staticmethod
-    def get_authors():
-        return (
-            Author.objects.prefetch_related(
-                Prefetch("books", queryset=Book.objects.select_related("category"))
-            )
-            .annotate(book_counts=Count("books", distinct=True))
-            .all()
-        )
+    def get_authors(filters=None):
+        book_filters = Q()
+        if filters:
+            # Split filters for author and book fields
+            for child in filters.children:
+                if child[0].startswith("books__"):
+                    # Remove 'books__' prefix for book filters
+                    book_filters &= Q(**{child[0][7:]: child[1]})
+        print(f"Book filters: {book_filters}")
+        books_qs = Book.objects.select_related("library", "category")
+        if book_filters:
+            books_qs = books_qs.filter(book_filters)
 
-    # Add more queryset methods as needed
+        queryset = Author.objects.prefetch_related(
+            Prefetch("books", queryset=books_qs)
+        ).annotate(
+            book_counts=Count(
+                "books",
+                filter=filters,
+                distinct=True,
+            )
+        )
+        return queryset
 
 
 class BookService:

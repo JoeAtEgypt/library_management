@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -39,9 +40,25 @@ class LibraryListView(generics.ListAPIView):
 class AuthorListView(generics.ListAPIView):
     """API view to list authors with optional filtering by book category and author."""  # noqa: E501
 
-    queryset = AuthorService.get_authors()
     serializer_class = AuthorListSerializer
     filterset_class = AuthorFilter
+
+    def get_queryset(self):
+        """
+        Override to get the queryset based on filters.
+        """
+        # Pull filters manually to use in annotation
+        book_category = self.request.query_params.get("book_category")
+        library = self.request.query_params.get("library")
+
+        # Dynamic filter Q object
+        filter_q = Q()
+        if book_category:
+            filter_q &= Q(books__category__name__iexact=book_category)
+        if library:
+            filter_q &= Q(books__library__name__iexact=library)
+
+        return AuthorService.get_authors(filters=filter_q if filter_q else None)
 
 
 class BookListView(generics.ListAPIView):
