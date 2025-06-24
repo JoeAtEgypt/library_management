@@ -28,11 +28,18 @@ class LibraryService:
         """
 
         user_location = Point(user_longitude, user_latitude, srid=4326)
-        return (
-            Library.objects.annotate(distance=Distance("location", user_location))
-            .filter(distance__lte=20_000)  # in meters
+        queryset = (
+            Library.objects.annotate(
+                distance=Distance("location", user_location, spheroid=True)
+            )
+            # .filter(distance__lte=20_000)  # in meters
             .order_by("distance")
         )
+        # Print the distance for each library
+        for library in queryset:
+            print(f"{library.name}: {round(library.distance.km, 2)} km")
+
+        return queryset
 
 
 class AuthorService:
@@ -42,7 +49,7 @@ class AuthorService:
             Author.objects.prefetch_related(
                 Prefetch("books", queryset=Book.objects.select_related("category"))
             )
-            .annotate(book_counts=Count("books"))
+            .annotate(book_counts=Count("books", distinct=True))
             .all()
         )
 
@@ -111,7 +118,7 @@ class BookService:
             "book_availability",
             {
                 "type": "book_available",
-                "message": f"The book '{borrowed_book.title}' was returned and is now available.",  # noqa: E501
+                "message": f"The book '{borrowed_book.book.title}' was returned and is now available.",  # noqa: E501
             },
         )
         return borrowed_book.penalty

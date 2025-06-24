@@ -66,7 +66,6 @@ class BorrowBookView(APIView):
             return_due=request.data.get("return_due"),
         )
 
-
         return Response({"message": "Books borrowed successfully"}, status=200)
 
 

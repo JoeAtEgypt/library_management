@@ -133,6 +133,9 @@ class BorrowedBook(models.Model):
         if self.return_due > timezone.now() + timedelta(days=30):
             raise ValidationError("Return date can't exceed 30 days from now.")
 
+        if self.return_due < timezone.now():
+            raise ValidationError("Return date can't be in the past.")
+
         return super().clean()
 
     def save(self, *args, **kwargs):
