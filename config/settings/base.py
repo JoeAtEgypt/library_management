@@ -353,6 +353,14 @@ REST_FRAMEWORK = {
         "library_management.core.api.renderers.StandardAPIRenderer",
     ],
     "EXCEPTION_HANDLER": "library_management.core.api.exceptions.custom_exception_handler",
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.UserRateThrottle",
+        "rest_framework.throttling.AnonRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "user": "100/day",  # Authenticated users: 100 requests/day
+        "anon": "20/hour",  # Anonymous users: 20 requests/hour
+    },
 }
 
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
