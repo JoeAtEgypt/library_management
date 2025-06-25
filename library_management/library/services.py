@@ -32,12 +32,9 @@ class LibraryService:
             Library.objects.annotate(
                 distance=Distance("location", user_location, spheroid=True)
             )
-            # .filter(distance__lte=20_000)  # in meters
+            .filter(distance__lte=20_000)  # in meters
             .order_by("distance")
         )
-        # Print the distance for each library
-        for library in queryset:
-            print(f"{library.name}: {round(library.distance.km, 2)} km")
 
         return queryset
 
